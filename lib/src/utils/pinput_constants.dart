@@ -16,21 +16,13 @@ class PinputConstants {
   static const _defaultSeparator = SizedBox(width: 8);
 
   /// The hidden text under the Pinput
-  static const _hiddenTextStyle =
-      TextStyle(fontSize: 1, height: 1, color: Colors.transparent);
+  static TextStyle  _hiddenTextStyle(BuildContext context){
+  return  TextStyle(fontSize: 1, height: 1, color: Colors.transparent);
+  //   return TextStyle(
+  //     fontSize: 16,
+  //   );
+  }
 
   ///
-  static const _defaultPinFillColor = Color.fromRGBO(222, 231, 240, .57);
-  static const _defaultPinputDecoration = BoxDecoration(
-    color: _defaultPinFillColor,
-    borderRadius: BorderRadius.all(Radius.circular(8)),
-  );
 
-  /// The default value [Pinput.defaultPinTheme]
-  static const _defaultPinTheme = PinTheme(
-    width: 56,
-    height: 60,
-    textStyle: TextStyle(),
-    decoration: _defaultPinputDecoration,
-  );
 }

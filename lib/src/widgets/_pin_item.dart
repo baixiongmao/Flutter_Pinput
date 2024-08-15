@@ -3,15 +3,17 @@ part of '../pinput.dart';
 class _PinItem extends StatelessWidget {
   final _PinputState state;
   final int index;
+  final int lenght;
 
   const _PinItem({
     required this.state,
     required this.index,
+    required this.lenght,
   });
 
   @override
   Widget build(BuildContext context) {
-    final pinTheme = _pinTheme(index);
+    final pinTheme = _pinTheme(index, context);
 
     return Flexible(
       child: AnimatedContainer(
@@ -35,29 +37,46 @@ class _PinItem extends StatelessWidget {
     );
   }
 
-  PinTheme _pinTheme(int index) {
+  PinTheme _pinTheme(int index, BuildContext context) {
     final pintState = state._getState(index);
     switch (pintState) {
       case PinItemStateType.initial:
-        return _getDefaultPinTheme();
+        return state.widget.defaultPinTheme ?? _defaultPinTheme(context);
       case PinItemStateType.focused:
-        return _pinThemeOrDefault(state.widget.focusedPinTheme);
+        return _pinThemeOrDefault(state.widget.focusedPinTheme, context);
       case PinItemStateType.submitted:
-        return _pinThemeOrDefault(state.widget.submittedPinTheme);
+        return _pinThemeOrDefault(state.widget.submittedPinTheme, context);
       case PinItemStateType.following:
-        return _pinThemeOrDefault(state.widget.followingPinTheme);
+        return _pinThemeOrDefault(state.widget.followingPinTheme, context);
       case PinItemStateType.disabled:
-        return _pinThemeOrDefault(state.widget.disabledPinTheme);
+        return _pinThemeOrDefault(state.widget.disabledPinTheme, context);
       case PinItemStateType.error:
-        return _pinThemeOrDefault(state.widget.errorPinTheme);
+        return _pinThemeOrDefault(state.widget.errorPinTheme, context);
     }
   }
 
-  PinTheme _getDefaultPinTheme() =>
-      state.widget.defaultPinTheme ?? PinputConstants._defaultPinTheme;
+  /// The default value [Pinput.defaultPinTheme]
+  PinTheme _defaultPinTheme(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width / lenght;
+    return PinTheme(
+      width: width,
+      height: 70,
+      textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 24),
+      margin: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        color: Theme.of(context).colorScheme.surfaceContainer,
+      ),
+    );
+  }
 
-  PinTheme _pinThemeOrDefault(PinTheme? theme) =>
-      theme ?? _getDefaultPinTheme();
+  PinTheme _getDefaultPinTheme(BuildContext context) =>
+      state.widget.defaultPinTheme ?? _defaultPinTheme(context);
+
+  PinTheme _pinThemeOrDefault(PinTheme? theme, BuildContext context) =>
+      theme ?? _getDefaultPinTheme(context);
 
   Widget _buildFieldContent(int index, PinTheme pinTheme) {
     final pin = state.pin;

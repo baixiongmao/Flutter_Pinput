@@ -384,7 +384,7 @@ class _PinputState extends State<Pinput>
         child: EditableText(
           key: editableTextKey,
           maxLines: 1,
-          style: PinputConstants._hiddenTextStyle,
+          style: PinputConstants._hiddenTextStyle(context),
           onChanged: (value) {
             field.didChange(value);
             _maybeUseHaptic(widget.hapticFeedbackType);
@@ -502,7 +502,7 @@ class _PinputState extends State<Pinput>
             );
           }
 
-          return _PinItem(state: this, index: index);
+          return _PinItem(state: this, index: index,lenght:widget.length);
         }).toList(),
       );
     }
